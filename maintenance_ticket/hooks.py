@@ -95,13 +95,28 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Sales Invoice": 
+	{"on_cancel": 
+	"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_maintenance_ticket_reference_from_sales_invoice",
+	"on_trash":
+	"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_maintenance_ticket_reference_from_sales_invoice"
+	},
+	"Payment Entry": 
+	{"on_cancel": 
+	"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_maintenance_ticket_reference_from_payment_entry",
+	"on_submit":
+	"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.update_maintenance_ticket_advance_amount_from_payment_entry",
+	"on_trash":
+	"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_maintenance_ticket_reference_from_payment_entry"
+	},
+	"Stock Entry":{
+		"on_cancel":
+		"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_stock_entry_reference_from_maintenance_ticket",
+		"on_trash":
+		"maintenance_ticket.maintenance_ticket.doctype.maintenance_ticket_cd.maintenance_ticket_cd.remove_stock_entry_reference_from_maintenance_ticket"
+	}
+}
 
 # Scheduled Tasks
 # ---------------
