@@ -12,21 +12,26 @@
   "customer_type",
   "customer",
   "customer_for_outside",
+  "phone_no",
   "customer_address",
-  "maintenance_type",
-  "maintenance_amount",
+  "attachment_1",
+  "attachment_2",
+  "attachment_3",
   "cb_1",
   "company",
   "company_currency",
   "status",
-  "phone_no",
   "item",
   "serial_no",
   "item_sold_date",
   "item_for_outside",
   "serial_no_for_outside",
   "warranty_status",
+  "amount_section",
+  "maintenance_type",
+  "maintenance_amount",
   "advance_amount",
+  "column_break_25",
   "include_shipping_service",
   "shipping_amount",
   "tracking_no",
@@ -126,8 +131,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Maintenance Type",
-   "options": "Maintenance Type",
-   "reqd": 1
+   "options": "Maintenance Type"
   },
   {
    "fetch_from": "maintenance_type.price",
@@ -192,7 +196,8 @@
   {
    "fieldname": "company_currency",
    "fieldtype": "Link",
-   "options": "Currency"
+   "options": "Currency",
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.customer_type =='Existing'",
@@ -216,6 +221,32 @@
    "fieldtype": "Data",
    "label": "Customer Name",
    "mandatory_depends_on": "eval:doc.customer_type=='Outside'"
+  },
+  {
+   "fieldname": "amount_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_25",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "attachment_1",
+   "fieldtype": "Attach",
+   "label": "Attachment 1",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attachment_2",
+   "fieldtype": "Attach",
+   "label": "Attachment 2",
+   "reqd": 1
+  },
+  {
+   "fieldname": "attachment_3",
+   "fieldtype": "Attach",
+   "label": "Attachment 3",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -229,7 +260,7 @@
    "link_fieldname": "maintenance_ticket_cf"
   }
  ],
- "modified": "2022-12-12 12:45:09.703356",
+ "modified": "2022-12-15 08:22:12.025405",
  "modified_by": "Administrator",
  "module": "Maintenance Ticket",
  "name": "Maintenance Ticket CD",

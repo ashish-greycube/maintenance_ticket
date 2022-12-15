@@ -27,6 +27,9 @@ frappe.ui.form.on('Maintenance Ticket CD', {
 		}
 	},
 	make_invoice_entry: function (frm) {
+		if (frm.doc.maintenance_type==undefined || frm.doc.maintenance_type=='') {
+			frappe.throw(__('Please select Maintenance Type to proceed..'))
+		}
 		frappe.call({
 			method: "create_sales_invoice",
 			doc: frm.doc,
