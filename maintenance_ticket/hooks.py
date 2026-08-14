@@ -58,7 +58,7 @@ app_license = "MIT"
 
 # before_install = "maintenance_ticket.install.before_install"
 # after_install = "maintenance_ticket.install.after_install"
-after_migrate = "pure_clean.migrate.after_migrate"
+after_migrate = "maintenance_ticket.migrate.after_migrate"
 # Uninstallation
 # ------------
 
