@@ -14,13 +14,46 @@ from erpnext.accounts.doctype.bank_account.bank_account import (
 )
 from frappe.utils import nowdate,get_link_to_form
 from frappe.utils.data import getdate, nowdate
-from erpnext.non_profit.doctype.member.member import create_customer
+
+
+def create_customer_from_v13(user_details):
+	# vendored from erpnext.non_profit.doctype.member.member.create_customer (v13),
+	# since the non_profit module was split out of erpnext in v14/v15
+	customer = frappe.new_doc("Customer")
+	customer.customer_name = user_details.fullname
+	customer.customer_type = "Individual"
+	customer.customer_group = frappe.db.get_single_value("Selling Settings", "customer_group")
+	customer.territory = frappe.db.get_single_value("Selling Settings", "territory")
+	customer.flags.ignore_mandatory = True
+	customer.insert(ignore_permissions=True)
+
+	try:
+		frappe.db.savepoint("contact_creation")
+		contact = frappe.new_doc("Contact")
+		contact.first_name = user_details.fullname
+		if user_details.phone:
+			contact.add_phone(user_details.phone, is_primary_phone=1, is_primary_mobile_no=1)
+		if user_details.email:
+			contact.add_email(user_details.email, is_primary=1)
+		contact.insert(ignore_permissions=True)
+
+		contact.append("links", {"link_doctype": "Customer", "link_name": customer.name})
+		contact.save(ignore_permissions=True)
+
+	except frappe.DuplicateEntryError:
+		return customer.name
+
+	except Exception:
+		frappe.db.rollback(save_point="contact_creation")
+		frappe.log_error(frappe.get_traceback(), _("Contact Creation Failed"))
+
+	return customer.name
 
 
 class MaintenanceTicketCD(Document):
 	def before_insert(self):
 		if  self.customer_type=='Outside':
-			customer = create_customer(
+			customer = create_customer_from_v13(
 				frappe._dict({"fullname": self.customer_for_outside, "email": None, "phone": self.phone_no or None})
 			)
 			self.customer = customer
